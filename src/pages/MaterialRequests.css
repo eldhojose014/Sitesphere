@@ -1,0 +1,278 @@
+.material-requests-page {
+  padding: 30px;
+  min-height: calc(100vh - 80px);
+  background: #f6f8fb;
+}
+
+.material-requests-header {
+  margin-bottom: 25px;
+}
+
+.material-requests-header h1 {
+  margin: 0 0 6px;
+  font-size: 30px;
+  color: #172033;
+}
+
+.material-requests-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.success-message,
+.error-message {
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.success-message {
+  background: #ecfdf3;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.error-message {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.requests-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  background: white;
+  border: 1px solid #e1e5eb;
+  border-radius: 8px;
+  padding: 0 14px;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 13px 0;
+  font-size: 14px;
+}
+
+.requests-toolbar select {
+  min-width: 180px;
+  border: 1px solid #e1e5eb;
+  border-radius: 8px;
+  background: white;
+  padding: 12px;
+  outline: none;
+  color: #374151;
+}
+
+.requests-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.requests-card-header {
+  padding: 20px;
+  border-bottom: 1px solid #edf0f3;
+}
+
+.requests-card-header h2 {
+  margin: 0 0 5px;
+  font-size: 19px;
+  color: #172033;
+}
+
+.requests-card-header span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1150px;
+}
+
+.requests-table th {
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.requests-table td {
+  padding: 16px;
+  border-bottom: 1px solid #edf0f3;
+  color: #374151;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.requests-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+.request-id {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.material-name,
+.requester-name {
+  font-weight: 600;
+  color: #172033;
+  margin-bottom: 4px;
+}
+
+.requests-table small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.request-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.request-status-pending {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.request-status-approved {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.request-status-rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.request-status-default {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.request-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.approve-btn,
+.reject-btn {
+  border: none;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.approve-btn {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.approve-btn:hover {
+  background: #dcfce7;
+}
+
+.reject-btn {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.reject-btn:hover {
+  background: #fee2e2;
+}
+
+.action-completed {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.requests-state {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+
+.empty-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.requests-state h3 {
+  margin: 5px 0;
+  color: #172033;
+}
+
+.requests-state p {
+  margin: 5px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: request-spin 0.8s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes request-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 800px) {
+  .material-requests-page {
+    padding: 20px;
+  }
+
+  .requests-toolbar {
+    flex-direction: column;
+  }
+
+  .requests-toolbar select {
+    width: 100%;
+  }
+}

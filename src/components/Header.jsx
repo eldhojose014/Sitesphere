@@ -16,10 +16,11 @@ const Header = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="navigation">
+       <nav className="navigation">
           <a href="/">Dashboard</a>
           <a href="/projects">Projects</a>
-          <a href="/labour">Labour</a>
+          <a href="/users">Users</a>
+          <a href="/material-requests">Material Requests</a>
           <a href="/materials">Materials</a>
           <a href="/reports">Reports</a>
         </nav>

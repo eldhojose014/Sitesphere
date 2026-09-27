@@ -1,73 +1,303 @@
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { supabase } from "../lib/supabaseClient";
 import "./SiteSupervisor.css";
 
 const SiteSupervisor = () => {
-  // Temporary demo data.
-  // We will replace this with Supabase data later.
-  const supervisor = {
-    name: "Admin",
-    role: "Site Supervisor",
-    project: "Residential Building Project",
+  const [project, setProject] = useState(null);
+  const [labours, setLabours] = useState([]);
+  const [attendance, setAttendance] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [materialRequests, setMaterialRequests] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // -----------------------------------------
+  // FETCH ALL SITE SUPERVISOR DATA
+  // -----------------------------------------
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const [
+          projectsResult,
+          laboursResult,
+          attendanceResult,
+          materialsResult,
+          requestsResult,
+        ] = await Promise.all([
+          supabase
+            .from("projects")
+            .select("*")
+            .order("project_id", { ascending: true })
+            .limit(1),
+
+          supabase
+            .from("labours")
+            .select("*"),
+
+          supabase
+            .from("attendance")
+            .select("*"),
+
+          supabase
+            .from("materials")
+            .select("*"),
+
+          supabase
+            .from("material_request")
+            .select("*"),
+        ]);
+
+        // Check for errors
+        if (projectsResult.error) {
+          throw new Error(
+            `Projects: ${projectsResult.error.message}`
+          );
+        }
+
+        if (laboursResult.error) {
+          throw new Error(
+            `Labours: ${laboursResult.error.message}`
+          );
+        }
+
+        if (attendanceResult.error) {
+          throw new Error(
+            `Attendance: ${attendanceResult.error.message}`
+          );
+        }
+
+        if (materialsResult.error) {
+          throw new Error(
+            `Materials: ${materialsResult.error.message}`
+          );
+        }
+
+        if (requestsResult.error) {
+          throw new Error(
+            `Material Requests: ${requestsResult.error.message}`
+          );
+        }
+
+        // Store real Supabase data
+        setProject(
+          projectsResult.data && projectsResult.data.length > 0
+            ? projectsResult.data[0]
+            : null
+        );
+
+        setLabours(laboursResult.data || []);
+        setAttendance(attendanceResult.data || []);
+        setMaterials(materialsResult.data || []);
+        setMaterialRequests(requestsResult.data || []);
+      } catch (err) {
+        console.error("Dashboard error:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // -----------------------------------------
+  // HELPER FUNCTIONS
+  // -----------------------------------------
+
+  const getValue = (object, possibleKeys) => {
+    if (!object) return "";
+
+    for (const key of possibleKeys) {
+      if (
+        object[key] !== undefined &&
+        object[key] !== null &&
+        object[key] !== ""
+      ) {
+        return object[key];
+      }
+    }
+
+    return "";
   };
 
-  const labourStats = {
-    total: 32,
-    present: 27,
-    absent: 3,
-    halfDay: 2,
+  const formatDate = (value) => {
+    if (!value) return "-";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
 
-  const materials = [
-    {
-      name: "Cement",
-      quantity: 145,
-      unit: "Bags",
-      status: "Available",
-    },
-    {
-      name: "Steel",
-      quantity: 850,
-      unit: "Kg",
-      status: "Available",
-    },
-    {
-      name: "Sand",
-      quantity: 12,
-      unit: "Ton",
-      status: "Low Stock",
-    },
-    {
-      name: "Bricks",
-      quantity: 2400,
-      unit: "Nos",
-      status: "Available",
-    },
-  ];
+  // -----------------------------------------
+  // LABOUR DATA
+  // -----------------------------------------
 
-  const recentRequests = [
-    {
-      material: "Cement",
-      quantity: 50,
-      unit: "Bags",
-      date: "26 Sep 2026",
-      status: "Pending",
-    },
-    {
-      material: "Sand",
-      quantity: 5,
-      unit: "Ton",
-      date: "25 Sep 2026",
-      status: "Approved",
-    },
-    {
-      material: "Steel",
-      quantity: 200,
-      unit: "Kg",
-      date: "24 Sep 2026",
-      status: "Pending",
-    },
-  ];
+  const totalLabour = labours.length;
+
+  // -----------------------------------------
+  // ATTENDANCE DATA
+  // -----------------------------------------
+
+  const getAttendanceStatus = (record) => {
+    const status = getValue(record, [
+      "status",
+      "attendance_status",
+      "attendanceStatus",
+      "state",
+    ]);
+
+    return String(status).toLowerCase().trim();
+  };
+
+  const presentCount = attendance.filter((record) => {
+    const status = getAttendanceStatus(record);
+
+    return (
+      status === "present" ||
+      status === "p" ||
+      status === "present today"
+    );
+  }).length;
+
+  const absentCount = attendance.filter((record) => {
+    const status = getAttendanceStatus(record);
+
+    return (
+      status === "absent" ||
+      status === "a"
+    );
+  }).length;
+
+  const halfDayCount = attendance.filter((record) => {
+    const status = getAttendanceStatus(record);
+
+    return (
+      status === "half day" ||
+      status === "halfday" ||
+      status === "half_day" ||
+      status === "half"
+    );
+  }).length;
+
+  const attendanceTotal =
+    presentCount + absentCount + halfDayCount;
+
+  const attendanceRate =
+    attendanceTotal > 0
+      ? Math.round((presentCount / attendanceTotal) * 100)
+      : 0;
+
+  // -----------------------------------------
+  // MATERIAL DISPLAY HELPERS
+  // -----------------------------------------
+
+  const getMaterialName = (material) => {
+    return (
+      getValue(material, [
+        "material_name",
+        "material",
+        "name",
+        "item_name",
+        "item",
+      ]) || "Unnamed Material"
+    );
+  };
+
+  const getMaterialQuantity = (material) => {
+    return getValue(material, [
+      "quantity",
+      "available_quantity",
+      "stock",
+      "current_stock",
+      "qty",
+    ]);
+  };
+
+  const getMaterialUnit = (material) => {
+    return getValue(material, [
+      "unit",
+      "measurement_unit",
+      "uom",
+    ]);
+  };
+
+  const getMaterialStatus = (material) => {
+    return (
+      getValue(material, [
+        "status",
+        "stock_status",
+      ]) || "Available"
+    );
+  };
+
+  // -----------------------------------------
+  // MATERIAL REQUEST HELPERS
+  // -----------------------------------------
+
+  const getRequestMaterial = (request) => {
+    return (
+      getValue(request, [
+        "material_name",
+        "material",
+        "name",
+        "item_name",
+        "item",
+      ]) || "Material"
+    );
+  };
+
+  const getRequestQuantity = (request) => {
+    return getValue(request, [
+      "quantity",
+      "requested_quantity",
+      "qty",
+    ]);
+  };
+
+  const getRequestUnit = (request) => {
+    return getValue(request, [
+      "unit",
+      "measurement_unit",
+      "uom",
+    ]);
+  };
+
+  const getRequestDate = (request) => {
+    return getValue(request, [
+      "request_date",
+      "requested_date",
+      "date",
+      "created_at",
+    ]);
+  };
+
+  const getRequestStatus = (request) => {
+    return (
+      getValue(request, [
+        "status",
+        "request_status",
+      ]) || "Pending"
+    );
+  };
+
+  // -----------------------------------------
+  // PAGE
+  // -----------------------------------------
 
   return (
     <div className="supervisor-page">
@@ -75,7 +305,7 @@ const SiteSupervisor = () => {
 
       <main className="supervisor-main">
 
-        {/* Page Header */}
+        {/* PAGE HEADER */}
         <section className="supervisor-heading">
           <div>
             <p className="page-label">SITE SUPERVISOR</p>
@@ -89,12 +319,40 @@ const SiteSupervisor = () => {
 
           <div className="project-selector">
             <span>Current Project</span>
-            <strong>{supervisor.project}</strong>
+
+            {loading && <strong>Loading...</strong>}
+
+            {!loading && !error && project && (
+              <strong>{project.project_name}</strong>
+            )}
+
+            {!loading && !error && !project && (
+              <strong>No project found</strong>
+            )}
+
+            {!loading && error && (
+              <strong>Unable to load</strong>
+            )}
           </div>
         </section>
 
+        {/* ERROR */}
+        {error && (
+          <div
+            style={{
+              background: "#fee2e2",
+              color: "#991b1b",
+              padding: "16px",
+              borderRadius: "8px",
+              marginBottom: "24px",
+            }}
+          >
+            <strong>Supabase Error</strong>
+            <p style={{ marginBottom: 0 }}>{error}</p>
+          </div>
+        )}
 
-        {/* Statistics */}
+        {/* STATISTICS */}
         <section className="stats-grid">
 
           <div className="stat-card">
@@ -102,7 +360,7 @@ const SiteSupervisor = () => {
 
             <div>
               <span>Total Labour</span>
-              <strong>{labourStats.total}</strong>
+              <strong>{loading ? "..." : totalLabour}</strong>
             </div>
           </div>
 
@@ -111,7 +369,7 @@ const SiteSupervisor = () => {
 
             <div>
               <span>Present Today</span>
-              <strong>{labourStats.present}</strong>
+              <strong>{loading ? "..." : presentCount}</strong>
             </div>
           </div>
 
@@ -120,7 +378,7 @@ const SiteSupervisor = () => {
 
             <div>
               <span>Absent</span>
-              <strong>{labourStats.absent}</strong>
+              <strong>{loading ? "..." : absentCount}</strong>
             </div>
           </div>
 
@@ -129,14 +387,13 @@ const SiteSupervisor = () => {
 
             <div>
               <span>Half Day</span>
-              <strong>{labourStats.halfDay}</strong>
+              <strong>{loading ? "..." : halfDayCount}</strong>
             </div>
           </div>
 
         </section>
 
-
-        {/* Quick Actions */}
+        {/* QUICK ACTIONS */}
         <section className="section">
 
           <div className="section-heading">
@@ -159,7 +416,6 @@ const SiteSupervisor = () => {
               <span className="arrow">→</span>
             </button>
 
-
             <button className="action-card">
               <span className="action-icon">👷</span>
 
@@ -171,7 +427,6 @@ const SiteSupervisor = () => {
               <span className="arrow">→</span>
             </button>
 
-
             <button className="action-card">
               <span className="action-icon">📦</span>
 
@@ -182,7 +437,6 @@ const SiteSupervisor = () => {
 
               <span className="arrow">→</span>
             </button>
-
 
             <button className="action-card">
               <span className="action-icon">📝</span>
@@ -196,14 +450,12 @@ const SiteSupervisor = () => {
             </button>
 
           </div>
-
         </section>
 
-
-        {/* Main Dashboard Grid */}
+        {/* MATERIAL INVENTORY + ATTENDANCE */}
         <section className="dashboard-grid">
 
-          {/* Inventory */}
+          {/* MATERIAL INVENTORY */}
           <div className="dashboard-card">
 
             <div className="card-header">
@@ -219,34 +471,58 @@ const SiteSupervisor = () => {
 
             <div className="inventory-list">
 
-              {materials.map((material) => (
-                <div
-                  className="inventory-row"
-                  key={material.name}
-                >
-                  <div className="material-info">
-                    <strong>{material.name}</strong>
-                    <span>{material.quantity} {material.unit}</span>
-                  </div>
+              {!loading && materials.length === 0 && (
+                <p style={{ padding: "20px 0", color: "#6b7280" }}>
+                  No material records found.
+                </p>
+              )}
 
-                  <span
-                    className={`status ${
-                      material.status === "Low Stock"
-                        ? "status-warning"
-                        : "status-success"
-                    }`}
+              {materials.map((material, index) => {
+                const name = getMaterialName(material);
+                const quantity = getMaterialQuantity(material);
+                const unit = getMaterialUnit(material);
+                const status = getMaterialStatus(material);
+
+                const isWarning =
+                  String(status).toLowerCase().includes("low");
+
+                return (
+                  <div
+                    className="inventory-row"
+                    key={
+                      material.material_id ||
+                      material.id ||
+                      index
+                    }
                   >
-                    {material.status}
-                  </span>
-                </div>
-              ))}
+                    <div className="material-info">
+                      <strong>{name}</strong>
+
+                      <span>
+                        {quantity !== ""
+                          ? quantity
+                          : "-"}{" "}
+                        {unit}
+                      </span>
+                    </div>
+
+                    <span
+                      className={`status ${
+                        isWarning
+                          ? "status-warning"
+                          : "status-success"
+                      }`}
+                    >
+                      {status}
+                    </span>
+                  </div>
+                );
+              })}
 
             </div>
-
           </div>
 
-
-          {/* Attendance */}
+          {/* ATTENDANCE */}
           <div className="dashboard-card">
 
             <div className="card-header">
@@ -266,27 +542,25 @@ const SiteSupervisor = () => {
                 <span className="attendance-dot present"></span>
 
                 <div>
-                  <strong>{labourStats.present}</strong>
+                  <strong>{loading ? "..." : presentCount}</strong>
                   <span>Present</span>
                 </div>
               </div>
-
 
               <div className="attendance-item">
                 <span className="attendance-dot absent"></span>
 
                 <div>
-                  <strong>{labourStats.absent}</strong>
+                  <strong>{loading ? "..." : absentCount}</strong>
                   <span>Absent</span>
                 </div>
               </div>
-
 
               <div className="attendance-item">
                 <span className="attendance-dot half"></span>
 
                 <div>
-                  <strong>{labourStats.halfDay}</strong>
+                  <strong>{loading ? "..." : halfDayCount}</strong>
                   <span>Half Day</span>
                 </div>
               </div>
@@ -297,11 +571,19 @@ const SiteSupervisor = () => {
 
               <div className="progress-label">
                 <span>Attendance Rate</span>
-                <strong>84%</strong>
+
+                <strong>
+                  {loading ? "..." : `${attendanceRate}%`}
+                </strong>
               </div>
 
               <div className="progress-bar">
-                <div className="progress-fill"></div>
+                <div
+                  className="progress-fill"
+                  style={{
+                    width: `${attendanceRate}%`,
+                  }}
+                ></div>
               </div>
 
             </div>
@@ -310,15 +592,17 @@ const SiteSupervisor = () => {
 
         </section>
 
-
-        {/* Material Requests */}
+        {/* MATERIAL REQUESTS */}
         <section className="section">
 
           <div className="section-heading">
 
             <div>
               <h2>Recent Material Requests</h2>
-              <p>Track requests raised for the project</p>
+
+              <p>
+                Track requests raised for the project
+              </p>
             </div>
 
             <button className="primary-button">
@@ -326,7 +610,6 @@ const SiteSupervisor = () => {
             </button>
 
           </div>
-
 
           <div className="table-card">
 
@@ -339,46 +622,86 @@ const SiteSupervisor = () => {
                 <span>Status</span>
               </div>
 
-
-              {recentRequests.map((request, index) => (
+              {!loading && materialRequests.length === 0 && (
                 <div
                   className="table-row"
-                  key={index}
+                  style={{
+                    padding: "24px",
+                    color: "#6b7280",
+                  }}
                 >
-                  <span className="material-name">
-                    {request.material}
-                  </span>
-
-                  <span>
-                    {request.quantity} {request.unit}
-                  </span>
-
-                  <span>
-                    {request.date}
-                  </span>
-
-                  <span>
-                    <span
-                      className={`status ${
-                        request.status === "Approved"
-                          ? "status-success"
-                          : "status-pending"
-                      }`}
-                    >
-                      {request.status}
-                    </span>
-                  </span>
+                  <span>No material requests found.</span>
                 </div>
-              ))}
+              )}
+
+              {materialRequests.map((request, index) => {
+
+                const material =
+                  getRequestMaterial(request);
+
+                const quantity =
+                  getRequestQuantity(request);
+
+                const unit =
+                  getRequestUnit(request);
+
+                const date =
+                  getRequestDate(request);
+
+                const status =
+                  getRequestStatus(request);
+
+                const isApproved =
+                  String(status).toLowerCase() ===
+                  "approved";
+
+                return (
+                  <div
+                    className="table-row"
+                    key={
+                      request.request_id ||
+                      request.id ||
+                      index
+                    }
+                  >
+
+                    <span className="material-name">
+                      {material}
+                    </span>
+
+                    <span>
+                      {quantity || "-"}{" "}
+                      {unit}
+                    </span>
+
+                    <span>
+                      {formatDate(date)}
+                    </span>
+
+                    <span>
+
+                      <span
+                        className={`status ${
+                          isApproved
+                            ? "status-success"
+                            : "status-pending"
+                        }`}
+                      >
+                        {status}
+                      </span>
+
+                    </span>
+
+                  </div>
+                );
+              })}
 
             </div>
-
           </div>
 
         </section>
 
-
-        {/* Daily Report */}
+        {/* DAILY REPORT */}
         <section className="daily-report-card">
 
           <div className="report-icon">
@@ -386,16 +709,20 @@ const SiteSupervisor = () => {
           </div>
 
           <div className="report-content">
+
             <span className="report-label">
               DAILY SITE REPORT
             </span>
 
-            <h2>Submit today's work progress</h2>
+            <h2>
+              Submit today's work progress
+            </h2>
 
             <p>
-              Record the work completed today and update the project
-              progress percentage.
+              Record the work completed today and
+              update the project progress percentage.
             </p>
+
           </div>
 
           <button className="primary-button">
