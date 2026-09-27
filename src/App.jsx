@@ -9,6 +9,7 @@ import SupervisorMaterialRequests from "./pages/SupervisorMaterialRequests";
 import Materials from "./pages/Materials";
 import ContractorMaterialRequests from "./pages/ContractorMaterialRequests";
 import Labours from "./pages/Labours";
+import Login from "./pages/Login";
 
 import "./App.css";
 
@@ -16,6 +17,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        <Route 
+          path="/login" 
+          element={<Login />} 
+        />
+
         <Route
           path="/supervisor"
           element={<SiteSupervisor />}
@@ -63,7 +70,7 @@ function App() {
 
         <Route
           path="/"
-          element={<SiteSupervisor />}
+          element={<Login />} 
         />
       </Routes>
     </BrowserRouter>

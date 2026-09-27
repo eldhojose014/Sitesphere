@@ -1,274 +1,444 @@
-.labours-page {
+/* =========================================
+   SITESPHERE - LABOURS PAGE
+   ========================================= */
+
+.page-container {
   min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
   background: #f5f7fb;
+  color: #172033;
 }
 
-.labours-main {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 42px 34px 70px;
-}
+/* =========================================
+   PAGE HEADER
+   ========================================= */
 
-.labours-heading {
+.page-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
-.page-label {
-  margin: 0 0 8px;
-  color: #2563eb;
+.page-header h1 {
+  margin: 0 0 6px;
+  color: #14213d;
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.page-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.primary-button,
+.primary-small-button,
+.secondary-button,
+.warning-button,
+.danger-button {
+  border-radius: 8px;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1.2px;
-}
-
-.labours-heading h1 {
-  margin: 0;
-  color: #10213f;
-  font-size: 34px;
-}
-
-.page-description {
-  margin: 10px 0 0;
-  color: #64748b;
-  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.18s ease;
 }
 
 .primary-button {
-  border: none;
-  border-radius: 9px;
+  padding: 11px 17px;
+  border: 1px solid #2563eb;
   background: #2563eb;
-  color: white;
-  padding: 12px 19px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.18);
 }
 
 .primary-button:hover {
   background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
-.primary-button:disabled {
-  opacity: 0.65;
+.primary-small-button {
+  padding: 7px 11px;
+  border: 1px solid #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.primary-small-button:hover {
+  background: #dbeafe;
+}
+
+.secondary-button {
+  padding: 9px 13px;
+  border: 1px solid #d8dee9;
+  background: #ffffff;
+  color: #344054;
+}
+
+.secondary-button:hover {
+  background: #f8fafc;
+  border-color: #b9c2d0;
+}
+
+.warning-button {
+  padding: 7px 11px;
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.warning-button:hover {
+  background: #ffedd5;
+}
+
+.danger-button {
+  padding: 7px 11px;
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.danger-button:hover {
+  background: #fee2e2;
+}
+
+button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none !important;
 }
 
-.success-message,
-.error-message {
-  padding: 13px 16px;
-  border-radius: 9px;
-  margin-bottom: 20px;
-  font-size: 14px;
+/* =========================================
+   SEARCH
+   ========================================= */
+
+.search-section {
+  margin-bottom: 18px;
 }
 
-.success-message {
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #047857;
-}
-
-.error-message {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
-}
-
-.labours-toolbar {
-  margin-bottom: 22px;
-}
-
-.labours-toolbar input {
-  width: min(620px, 100%);
+.search-section input {
+  width: 100%;
+  max-width: 500px;
+  height: 44px;
   box-sizing: border-box;
-  padding: 14px 16px;
+
+  padding: 0 15px;
+
   border: 1px solid #dbe2ea;
   border-radius: 9px;
-  background: white;
+
+  background: #ffffff;
+  color: #172033;
+
+  font-family: inherit;
+  font-size: 14px;
   outline: none;
-  font-size: 14px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.labours-toolbar input:focus {
+.search-section input::placeholder {
+  color: #98a2b3;
+}
+
+.search-section input:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.labours-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+/* =========================================
+   TABLE CARD
+   ========================================= */
+
+.table-card {
   overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 18px rgba(16, 24, 40, 0.05);
 }
 
-.card-heading {
-  padding: 24px;
-  border-bottom: 1px solid #e5e7eb;
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 21px 24px;
+
+  border-bottom: 1px solid #edf0f5;
 }
 
-.card-heading h2 {
+.table-header h2 {
+  margin: 0 0 5px;
+
+  color: #172033;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.table-header p {
   margin: 0;
-  color: #10213f;
-  font-size: 22px;
+
+  color: #8a94a6;
+  font-size: 13px;
 }
 
-.card-heading p {
-  margin: 7px 0 0;
-  color: #64748b;
-  font-size: 14px;
-}
+/* =========================================
+   TABLE
+   ========================================= */
 
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
 }
 
-.labours-table {
+table {
   width: 100%;
+  min-width: 1050px;
   border-collapse: collapse;
-  min-width: 850px;
 }
 
-.labours-table th,
-.labours-table td {
-  padding: 16px 20px;
-  text-align: left;
-  border-bottom: 1px solid #edf0f4;
-  font-size: 14px;
-}
-
-.labours-table th {
+thead {
   background: #f8fafc;
-  color: #64748b;
-  font-size: 12px;
-  text-transform: uppercase;
+}
+
+th {
+  padding: 13px 18px;
+
+  text-align: left;
+
+  border-bottom: 1px solid #e7ebf1;
+
+  color: #667085;
+  font-size: 11px;
+  font-weight: 750;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.labours-table td {
-  color: #334155;
+td {
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #eef1f5;
+
+  color: #344054;
+  font-size: 13px;
+
+  vertical-align: middle;
 }
 
-.labours-table td strong {
-  color: #10213f;
+tbody tr {
+  transition: background 0.15s ease;
 }
 
-.labours-table tbody tr:hover {
+tbody tr:hover {
   background: #fafcff;
 }
 
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* =========================================
+   STATUS BADGES
+   ========================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 190px;
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-badge.assigned {
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+  color: #027a48;
+}
+
+.status-badge.unassigned {
+  background: #f2f4f7;
+  border: 1px solid #e4e7ec;
+  color: #667085;
+}
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
 .action-buttons {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
 }
 
-.edit-button,
-.delete-button {
-  border-radius: 7px;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.edit-button {
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
-  color: #2563eb;
-}
-
-.delete-button {
-  border: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #dc2626;
-}
+/* =========================================
+   EMPTY / LOADING
+   ========================================= */
 
 .empty-state {
-  min-height: 360px;
+  min-height: 260px;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
-  text-align: center;
+
+  padding: 40px 24px;
+
+  color: #98a2b3;
+  font-size: 14px;
 }
 
-.empty-icon {
-  font-size: 44px;
-  margin-bottom: 12px;
+/* =========================================
+   ERROR
+   ========================================= */
+
+.error-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 9px;
+
+  color: #be123c;
+  font-size: 13px;
 }
 
-.empty-state h3 {
-  margin: 0;
-  color: #10213f;
-  font-size: 20px;
+.modal-error {
+  margin: 20px 28px 0;
 }
 
-.empty-state p {
-  margin: 9px 0 20px;
-  color: #64748b;
-}
+/* =========================================
+   MODAL OVERLAY
+   ========================================= */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+
+  padding: 24px;
+  box-sizing: border-box;
+
   background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(3px);
 }
 
-.labour-modal {
-  width: min(680px, 100%);
-  max-height: 90vh;
+/* =========================================
+   MODAL
+   ========================================= */
+
+.modal {
+  width: 100%;
+  max-width: 700px;
+  max-height: calc(100vh - 48px);
+
   overflow-y: auto;
-  background: white;
+
+  background: #ffffff;
   border-radius: 14px;
-  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.22);
 }
+
+.small-modal {
+  max-width: 480px;
+}
+
+/* =========================================
+   MODAL HEADER
+   ========================================= */
 
 .modal-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   gap: 20px;
-  padding: 24px;
-  border-bottom: 1px solid #e5e7eb;
+
+  padding: 24px 28px;
+
+  border-bottom: 1px solid #edf0f5;
 }
 
 .modal-header h2 {
-  margin: 0;
-  color: #10213f;
-  font-size: 22px;
+  margin: 0 0 5px;
+
+  color: #172033;
+  font-size: 21px;
+  font-weight: 750;
 }
 
 .modal-header p {
-  margin: 7px 0 0;
-  color: #64748b;
-  font-size: 14px;
+  margin: 0;
+
+  color: #8a94a6;
+  font-size: 13px;
 }
 
 .close-button {
-  border: none;
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+  border-radius: 7px;
+
   background: transparent;
-  color: #64748b;
-  font-size: 28px;
+  color: #667085;
+
+  font-size: 25px;
   line-height: 1;
+
   cursor: pointer;
 }
 
-.labour-modal form {
-  padding: 24px;
+.close-button:hover {
+  background: #f2f4f7;
+  color: #344054;
+}
+
+/* =========================================
+   FORM
+   ========================================= */
+
+form {
+  padding: 28px;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 20px;
 }
 
 .form-group {
@@ -282,51 +452,82 @@
 }
 
 .form-group label {
-  color: #334155;
-  font-size: 13px;
+  color: #344054;
+  font-size: 12px;
   font-weight: 700;
 }
 
-.form-group input {
-  box-sizing: border-box;
+.form-group input,
+.form-group select {
   width: 100%;
-  padding: 12px 13px;
+  height: 44px;
+  box-sizing: border-box;
+
+  padding: 0 13px;
+
+  background: #ffffff;
   border: 1px solid #dbe2ea;
   border-radius: 8px;
-  outline: none;
+
+  color: #172033;
+
+  font-family: inherit;
   font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.form-group input:focus {
+.form-group input::placeholder {
+  color: #98a2b3;
+}
+
+.form-group input:focus,
+.form-group select:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 26px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.cancel-button {
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
-  background: white;
-  color: #475569;
-  padding: 12px 18px;
-  font-weight: 700;
+.form-group select {
   cursor: pointer;
 }
 
-@media (max-width: 700px) {
-  .labours-main {
-    padding: 30px 18px 50px;
+/* =========================================
+   MODAL FOOTER
+   ========================================= */
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 28px;
+  padding-top: 20px;
+
+  border-top: 1px solid #edf0f5;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 800px) {
+  .page-container {
+    padding: 20px;
   }
 
-  .labours-heading {
+  .page-header {
+    align-items: flex-start;
     flex-direction: column;
+  }
+
+  .page-header .primary-button {
+    width: 100%;
   }
 
   .form-grid {
@@ -335,5 +536,49 @@
 
   .form-group.full-width {
     grid-column: auto;
+  }
+
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal {
+    max-height: calc(100vh - 24px);
+  }
+
+  .modal-header,
+  form {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-container {
+    padding: 14px;
+  }
+
+  .page-header h1 {
+    font-size: 25px;
+  }
+
+  .search-section input {
+    max-width: none;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .modal-footer button {
+    width: 100%;
   }
 }
