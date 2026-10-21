@@ -50,7 +50,7 @@ const Users = () => {
     const { data, error } = await supabase
       .from("users")
       .select(
-        "user_id, full_name, email, phone, password, role, status"
+        "user_id, full_name, email, phone, role, status"
       )
       .order("user_id", { ascending: true });
 
@@ -89,7 +89,7 @@ const Users = () => {
       full_name: user.full_name || "",
       email: user.email || "",
       phone: user.phone || "",
-      password: user.password || "",
+      password: "",
       role: user.role || "Contractor/Administrator",
       status: user.status || "Active",
     });
@@ -107,6 +107,7 @@ const Users = () => {
     setEditingUser(null);
     setFormData(emptyForm);
     setShowPassword(false);
+    setError("");
   };
 
   const validateForm = () => {
@@ -124,6 +125,10 @@ const Users = () => {
 
     if (!editingUser && !formData.password.trim()) {
       return "Password is required when creating a user.";
+    }
+
+    if (!editingUser && formData.password.length < 6) {
+      return "Password must be at least 6 characters.";
     }
 
     return "";
@@ -144,28 +149,21 @@ const Users = () => {
       return;
     }
 
-    const userData = {
-      full_name: formData.full_name.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
-      role: formData.role,
-      status: formData.status,
-    };
-
     /*
-      Password is included when creating a user.
-
-      When editing:
-      - If password is changed/entered, update it.
-      - Otherwise leave the existing password unchanged.
-    */
-    if (!editingUser) {
-      userData.password = formData.password;
-    } else if (formData.password.trim()) {
-      userData.password = formData.password;
-    }
-
+     * EDIT EXISTING USER
+     *
+     * Only the public.users profile is updated here.
+     * Passwords are managed by Supabase Auth.
+     */
     if (editingUser) {
+      const userData = {
+        full_name: formData.full_name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim() || null,
+        role: formData.role,
+        status: formData.status,
+      };
+
       const { error } = await supabase
         .from("users")
         .update(userData)
@@ -175,22 +173,61 @@ const Users = () => {
         setError(error.message);
       } else {
         setSuccess("User updated successfully.");
-        await fetchUsers();
-        setShowModal(false);
-      }
-    } else {
-      const { error } = await supabase
-        .from("users")
-        .insert([userData]);
 
-      if (error) {
-        setError(error.message);
-      } else {
-        setSuccess("User added successfully.");
         await fetchUsers();
+
         setShowModal(false);
+        setEditingUser(null);
+        setFormData(emptyForm);
+        setShowPassword(false);
       }
+
+      setSaving(false);
+      return;
     }
+
+    /*
+     * CREATE NEW USER
+     *
+     * The password is sent only to the secure
+     * Supabase Edge Function.
+     *
+     * It is NOT stored in public.users.
+     */
+    const { data, error } = await supabase.functions.invoke(
+      "create-user",
+      {
+        body: {
+          full_name: formData.full_name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone.trim() || null,
+          password: formData.password,
+          role: formData.role,
+          status: formData.status,
+        },
+      }
+    );
+
+    if (error) {
+      setError(error.message);
+      setSaving(false);
+      return;
+    }
+
+    if (data?.error) {
+      setError(data.error);
+      setSaving(false);
+      return;
+    }
+
+    setSuccess("User created successfully.");
+
+    await fetchUsers();
+
+    setShowModal(false);
+    setEditingUser(null);
+    setFormData(emptyForm);
+    setShowPassword(false);
 
     setSaving(false);
   };
@@ -228,9 +265,15 @@ const Users = () => {
     const search = searchTerm.toLowerCase();
 
     const matchesSearch =
-      (user.full_name || "").toLowerCase().includes(search) ||
-      (user.email || "").toLowerCase().includes(search) ||
-      (user.phone || "").toLowerCase().includes(search);
+      (user.full_name || "")
+        .toLowerCase()
+        .includes(search) ||
+      (user.email || "")
+        .toLowerCase()
+        .includes(search) ||
+      (user.phone || "")
+        .toLowerCase()
+        .includes(search);
 
     const matchesRole =
       roleFilter === "All" ||
@@ -242,7 +285,11 @@ const Users = () => {
       (user.status || "").toLowerCase() ===
         statusFilter.toLowerCase();
 
-    return matchesSearch && matchesRole && matchesStatus;
+    return (
+      matchesSearch &&
+      matchesRole &&
+      matchesStatus
+    );
   });
 
   const getRoleClass = (role) => {
@@ -272,6 +319,7 @@ const Users = () => {
       <div className="users-header">
         <div>
           <h1>Users</h1>
+
           <p>
             Manage SiteSphere users, roles and account status.
           </p>
@@ -434,8 +482,8 @@ const Users = () => {
                     <td>
                       <span
                         className={`user-status ${
-                          (user.status || "")
-                            .toLowerCase() === "active"
+                          (user.status || "").toLowerCase() ===
+                          "active"
                             ? "status-active"
                             : "status-inactive"
                         }`}
@@ -571,7 +619,10 @@ const Users = () => {
                     required
                   >
                     {ROLES.map((role) => (
-                      <option key={role} value={role}>
+                      <option
+                        key={role}
+                        value={role}
+                      >
                         {role}
                       </option>
                     ))}
@@ -602,10 +653,8 @@ const Users = () => {
 
                 <div className="form-group full-width">
                   <label htmlFor="password">
-                    Password
-                    {editingUser
-                      ? " (leave blank to keep current password)"
-                      : " *"}
+                    Password{" "}
+                    {editingUser ? "" : "*"}
                   </label>
 
                   <div className="password-input">
@@ -613,29 +662,46 @@ const Users = () => {
                       id="password"
                       name="password"
                       type={
-                        showPassword ? "text" : "password"
+                        showPassword
+                          ? "text"
+                          : "password"
                       }
-                      maxLength="255"
+                      minLength="6"
+                      maxLength="72"
                       value={formData.password}
                       onChange={handleInputChange}
                       placeholder={
                         editingUser
-                          ? "Enter new password only if changing it"
-                          : "Enter password"
+                          ? "Password is managed by Supabase Auth"
+                          : "Enter login password"
                       }
+                      required={!editingUser}
+                      disabled={!!editingUser}
                     />
 
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setShowPassword(
-                          (previous) => !previous
-                        )
-                      }
-                    >
-                      {showPassword ? "Hide" : "Show"}
-                    </button>
+                    {!editingUser && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowPassword(
+                            (previous) => !previous
+                          )
+                        }
+                      >
+                        {showPassword
+                          ? "Hide"
+                          : "Show"}
+                      </button>
+                    )}
                   </div>
+
+                  {!editingUser && (
+                    <small>
+                      This password is used only to create
+                      the Supabase Auth login account. It is
+                      not stored in the users table.
+                    </small>
+                  )}
                 </div>
               </div>
 

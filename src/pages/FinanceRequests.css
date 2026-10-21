@@ -1,0 +1,256 @@
+
+.finance-page {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 24px;
+  color: #1f2937;
+  font-family: Arial, sans-serif;
+}
+
+.finance-page h1 {
+  margin-bottom: 8px;
+  color: #123b5d;
+  font-size: 28px;
+}
+
+.finance-page .finance-subtitle {
+  margin-bottom: 28px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.finance-card {
+  padding: 24px;
+  margin-top: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+}
+
+.finance-card h2 {
+  margin-top: 0;
+  color: #123b5d;
+  font-size: 20px;
+}
+
+.finance-message {
+  padding: 12px 16px;
+  margin-top: 16px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.finance-error {
+  padding: 12px 16px;
+  margin-top: 16px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  overflow-wrap: anywhere;
+}
+
+.finance-project-count {
+  margin-top: 16px;
+  color: #166534;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .finance-page {
+    margin: 12px auto;
+    padding: 16px;
+  }
+
+  .finance-page h1 {
+    font-size: 24px;
+  }
+
+  .finance-card {
+    padding: 16px;
+  }
+}
+
+.finance-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.finance-card form label {
+  margin-top: 10px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.finance-card form input,
+.finance-card form select,
+.finance-card form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.finance-card form input:focus,
+.finance-card form select:focus,
+.finance-card form textarea:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #2563eb;
+}
+
+.finance-card form button {
+  margin-top: 18px;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #123b5d;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.finance-card form button:hover {
+  background: #1d527b;
+}
+
+.finance-card form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Supporting document upload layout */
+.finance-attachments {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.finance-attachments h3,
+.finance-attachment-help {
+  grid-column: 1 / -1;
+}
+
+.finance-attachments h3 {
+  margin: 0;
+}
+
+.finance-attachment-help {
+  margin: -8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.finance-attachment-field {
+  min-width: 0;
+}
+
+.finance-attachment-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+}
+
+.finance-attachment-field input[type="file"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+}
+
+.finance-selected-file {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.finance-selected-file button {
+  flex-shrink: 0;
+  padding: 4px 9px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .finance-attachments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.finance-wage-panel {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #d9e0e8;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.finance-wage-panel h3,
+.finance-wage-summary h4 {
+  margin-top: 0;
+}
+
+.finance-wage-dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.finance-wage-dates > div {
+  min-width: 0;
+}
+
+.finance-wage-dates input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.finance-wage-summary {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #d9e0e8;
+}
+
+.finance-wage-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.finance-wage-summary .finance-wage-total {
+  margin-top: 8px;
+  padding-top: 14px;
+  border-bottom: none;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .finance-wage-dates {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-wage-panel {
+    padding: 14px;
+  }
+}

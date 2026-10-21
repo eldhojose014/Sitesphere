@@ -8,13 +8,11 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
 
     if (!email.trim() || !password) {
@@ -24,7 +22,7 @@ function Login() {
 
     setLoading(true);
 
-    const { error: loginError } =
+    const { data: loginData, error: loginError } =
       await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
@@ -36,66 +34,103 @@ function Login() {
       return;
     }
 
+    const userId = loginData?.user?.id;
+
+    if (!userId) {
+      setError("Unable to identify the logged-in user.");
+      setLoading(false);
+      return;
+    }
+
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("users")
+        .select("role, status")
+        .eq("user_id", userId)
+        .single();
+
+    if (profileError || !profile) {
+      await supabase.auth.signOut();
+      setError("Your SiteSphere user profile was not found.");
+      setLoading(false);
+      return;
+    }
+
+    if (profile.status !== "Active") {
+      await supabase.auth.signOut();
+      setError("Your SiteSphere account is inactive.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(false);
 
-    navigate("/contractor");
+    switch (profile.role) {
+      case "Contractor/Administrator":
+        navigate("/contractor");
+        break;
+
+      case "Site Supervisor":
+        navigate("/supervisor");
+        break;
+
+      case "Civil Engineer":
+        navigate("/civil-engineer");
+        break;
+
+      case "Accountant":
+        navigate("/accountant");
+        break;
+
+      default:
+        await supabase.auth.signOut();
+        setError("Your account has an invalid role.");
+    }
   };
 
   return (
     <div className="login-page">
       <div className="login-card">
-        <div className="login-logo">
-          <span>S</span>
-        </div>
-
-        <div className="login-heading">
-          <h1>Welcome to SiteSphere</h1>
-          <p>Construction ERP Management System</p>
+        <div className="login-header">
+          <h1>SiteSphere</h1>
+          <p>Construction Management System</p>
         </div>
 
         <form onSubmit={handleLogin}>
-          {error && (
-            <div className="login-error">
-              {error}
-            </div>
-          )}
-
-          <div className="login-form-group">
-            <label>Email Address</label>
-
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
               autoComplete="email"
             />
           </div>
 
-          <div className="login-form-group">
-            <label>Password</label>
-
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
               autoComplete="current-password"
             />
           </div>
+
+          {error && <div className="login-error">{error}</div>}
 
           <button
             type="submit"
             className="login-button"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        <div className="login-footer">
-          <p>Authorized SiteSphere users only</p>
-        </div>
       </div>
     </div>
   );

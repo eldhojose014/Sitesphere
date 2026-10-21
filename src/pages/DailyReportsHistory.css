@@ -1,0 +1,258 @@
+
+.reports-history-page {
+  min-height: calc(100vh - 80px);
+  padding: 36px 20px 60px;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+.reports-history-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.reports-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.reports-history-eyebrow {
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.reports-history-header h1 {
+  margin: 8px 0;
+  font-size: 30px;
+}
+
+.reports-history-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.reports-history-count {
+  min-width: 130px;
+  padding: 16px 22px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.reports-history-count span,
+.reports-history-count strong {
+  display: block;
+}
+
+.reports-history-count span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.reports-history-count strong {
+  margin-top: 5px;
+  font-size: 26px;
+}
+
+.reports-history-filters {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.reports-history-filters > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 190px;
+}
+
+.reports-history-filters label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reports-history-filters select,
+.reports-history-filters input {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #fff;
+  color: #1f2937;
+}
+
+.reports-history-clear {
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.reports-history-list {
+  display: grid;
+  gap: 18px;
+}
+
+.reports-history-card {
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgb(15 23 42 / 4%);
+}
+
+.reports-history-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.reports-history-date {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.reports-history-card h2 {
+  margin: 6px 0 0;
+  font-size: 20px;
+}
+
+.reports-history-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 85px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.reports-history-progress strong {
+  font-size: 23px;
+}
+
+.reports-history-progress span {
+  font-size: 12px;
+}
+
+.reports-history-detail {
+  padding-top: 18px;
+}
+
+.reports-history-detail h3,
+.reports-history-issue h3 {
+  margin: 0 0 7px;
+  font-size: 14px;
+}
+
+.reports-history-detail p,
+.reports-history-issue p {
+  margin: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.reports-history-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.reports-history-meta > div {
+  min-width: 0;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.reports-history-meta span,
+.reports-history-meta strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.reports-history-meta span {
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.reports-history-issue {
+  margin-top: 18px;
+  padding: 14px;
+  border-left: 3px solid #f59e0b;
+  border-radius: 5px;
+  background: #fffbeb;
+}
+
+.reports-history-error {
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.reports-history-empty {
+  padding: 48px 20px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.reports-history-empty h2 {
+  margin-top: 0;
+}
+
+.reports-history-empty p {
+  color: #64748b;
+}
+
+@media (max-width: 600px) {
+  .reports-history-page {
+    padding: 24px 14px 40px;
+  }
+
+  .reports-history-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reports-history-header h1 {
+    font-size: 25px;
+  }
+
+  .reports-history-count {
+    width: 100%;
+  }
+
+  .reports-history-card {
+    padding: 18px;
+  }
+
+  .reports-history-meta {
+    grid-template-columns: 1fr;
+  }
+}

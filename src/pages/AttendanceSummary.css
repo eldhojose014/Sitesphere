@@ -1,0 +1,279 @@
+.attendance-summary-page {
+  min-height: calc(100vh - 80px);
+  background: #f6f8fc;
+  padding: 40px 0 60px;
+}
+
+.attendance-summary-container {
+  width: min(1450px, 92%);
+  margin: 0 auto;
+}
+
+/* ---------------------------------
+   PAGE HEADER
+--------------------------------- */
+
+.attendance-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 32px;
+}
+
+.attendance-summary-header h1 {
+  margin: 8px 0 10px;
+  color: #10213b;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.attendance-summary-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 15px;
+}
+
+.page-label {
+  margin: 0 !important;
+  color: #2563eb !important;
+  font-size: 12px !important;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+/* ---------------------------------
+   MONTH SELECTOR
+--------------------------------- */
+
+.attendance-summary-month {
+  min-width: 230px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.attendance-summary-month label {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.attendance-summary-month input {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid #d6dde8;
+  border-radius: 8px;
+  color: #1e293b;
+  font-size: 14px;
+  outline: none;
+}
+
+.attendance-summary-month input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ---------------------------------
+   ERROR
+--------------------------------- */
+
+.attendance-error {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 10px;
+  color: #be123c;
+  font-size: 14px;
+}
+
+/* ---------------------------------
+   MAIN CARD
+--------------------------------- */
+
+.attendance-summary-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e4e9f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+/* ---------------------------------
+   CARD HEADER
+--------------------------------- */
+
+.attendance-summary-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 26px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.attendance-summary-card-header h2 {
+  margin: 0 0 6px;
+  color: #10213b;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.attendance-summary-card-header p {
+  margin: 0;
+  color: #8a97a8;
+  font-size: 13px;
+}
+
+/* ---------------------------------
+   TABLE
+--------------------------------- */
+
+.attendance-summary-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.attendance-summary-table {
+  width: 100%;
+  min-width: 1050px;
+  border-collapse: collapse;
+}
+
+.attendance-summary-table thead {
+  background: #f8fafc;
+}
+
+.attendance-summary-table th {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e5eaf0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.attendance-summary-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #eef2f6;
+  color: #475569;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.attendance-summary-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.attendance-summary-table tbody tr:hover {
+  background: #fafcff;
+}
+
+.attendance-summary-table td strong {
+  display: inline-block;
+  color: #10213b;
+  font-weight: 650;
+}
+
+.attendance-summary-table td small {
+  display: block;
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* ---------------------------------
+   ATTENDANCE NUMBER CELLS
+--------------------------------- */
+
+.attendance-summary-table td:nth-child(3) {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.attendance-summary-table td:nth-child(4) {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.attendance-summary-table td:nth-child(5) {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.attendance-summary-table td:nth-child(6) strong {
+  padding: 6px 10px;
+  background: #eff6ff;
+  border-radius: 7px;
+  color: #2563eb;
+}
+
+/* ---------------------------------
+   SALARY
+--------------------------------- */
+
+.attendance-summary-table td:last-child strong {
+  color: #10213b;
+  font-size: 15px;
+}
+
+/* ---------------------------------
+   EMPTY / LOADING
+--------------------------------- */
+
+.attendance-empty {
+  padding: 60px 24px;
+  color: #64748b;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ---------------------------------
+   MOBILE
+--------------------------------- */
+
+@media (max-width: 900px) {
+  .attendance-summary-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .attendance-summary-month {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .attendance-summary-header h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .attendance-summary-page {
+    padding: 25px 0 40px;
+  }
+
+  .attendance-summary-container {
+    width: 94%;
+  }
+
+  .attendance-summary-card-header {
+    padding: 20px;
+  }
+
+  .attendance-summary-table th,
+  .attendance-summary-table td {
+    padding: 14px 16px;
+  }
+}

@@ -1,0 +1,303 @@
+.daily-report-page {
+  min-height: calc(100vh - 80px);
+  padding: 40px 0 60px;
+  background: #f5f7fb;
+}
+
+.daily-report-container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}
+
+/* Page header */
+
+.daily-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.daily-report-label {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.daily-report-header h1 {
+  margin: 0 0 10px;
+  color: #10213b;
+  font-size: 34px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.daily-report-header > div > p:last-child {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Form card */
+
+.daily-report-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.daily-report-card-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid #e8edf4;
+}
+
+.daily-report-card-header h2 {
+  margin: 0 0 7px;
+  color: #10213b;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.daily-report-card-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Form layout */
+
+.daily-report-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding: 28px;
+}
+
+.daily-report-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 9px;
+}
+
+.daily-report-full {
+  grid-column: 1 / -1;
+}
+
+.daily-report-field label {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.daily-report-field input,
+.daily-report-field select,
+.daily-report-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #1e293b;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.daily-report-field input,
+.daily-report-field select {
+  min-height: 46px;
+}
+
+.daily-report-field textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.daily-report-field input::placeholder,
+.daily-report-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.daily-report-field input:focus,
+.daily-report-field select:focus,
+.daily-report-field textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.daily-report-field input:disabled,
+.daily-report-field select:disabled,
+.daily-report-field textarea:disabled {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.daily-report-field small {
+  color: #b45309;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Messages */
+
+.daily-report-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.daily-report-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.daily-report-success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+/* Actions */
+
+.daily-report-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid #e8edf4;
+  background: #fafcff;
+}
+
+.daily-report-reset,
+.daily-report-submit {
+  min-height: 44px;
+  padding: 11px 20px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.daily-report-reset {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+}
+
+.daily-report-reset:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.daily-report-submit {
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.daily-report-submit:hover {
+  border-color: #1d4ed8;
+  background: #1d4ed8;
+}
+
+.daily-report-reset:active,
+.daily-report-submit:active {
+  transform: translateY(1px);
+}
+
+.daily-report-reset:disabled,
+.daily-report-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive layout */
+
+@media (max-width: 768px) {
+  .daily-report-page {
+    padding: 28px 0 40px;
+  }
+
+  .daily-report-container {
+    width: 94%;
+  }
+
+  .daily-report-header h1 {
+    font-size: 28px;
+  }
+
+  .daily-report-form {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 22px;
+  }
+
+  .daily-report-full {
+    grid-column: auto;
+  }
+
+  .daily-report-card-header {
+    padding: 22px;
+  }
+
+  .daily-report-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    padding: 20px 22px;
+  }
+
+  .daily-report-reset,
+  .daily-report-submit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-report-page {
+    padding: 22px 0 32px;
+  }
+
+  .daily-report-header h1 {
+    font-size: 25px;
+  }
+
+  .daily-report-header > div > p:last-child {
+    font-size: 14px;
+  }
+
+  .daily-report-form {
+    padding: 18px;
+  }
+
+  .daily-report-card-header {
+    padding: 20px 18px;
+  }
+
+  .daily-report-actions {
+    padding: 18px;
+  }
+}
