@@ -1,3 +1,4 @@
+import BrandLogo from "../components/BrandLogo";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import "./DailyReport.css";
@@ -182,6 +183,8 @@ function DailyReport() {
               Record daily work progress, labour and site conditions.
             </p>
           </div>
+
+          <BrandLogo variant="header" className="daily-report-logo" />
         </header>
 
         {error && (

@@ -205,10 +205,6 @@ const SupervisorMaterialRequests = () => {
         status: "Pending",
       };
 
-      console.log(
-        "Submitting material request:",
-        requestData
-      );
 
       const { data, error: insertError } =
         await supabase
@@ -221,10 +217,6 @@ const SupervisorMaterialRequests = () => {
         throw new Error(insertError.message);
       }
 
-      console.log(
-        "Material request created:",
-        data
-      );
 
       setSuccess(
         "Material request submitted successfully. It is now waiting for Contractor approval."

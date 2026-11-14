@@ -1,0 +1,255 @@
+/* =========================================
+   SITESPHERE - CIVIL ENGINEER DASHBOARD
+   ========================================= */
+
+.ce-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+.ce-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 30px 20px;
+}
+
+.ce-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.ce-label {
+  margin: 0 0 6px;
+  color: #e8a008;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.ce-heading h1 {
+  margin: 0 0 6px;
+  color: #0b3a5d;
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.ce-description {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+  max-width: 640px;
+}
+
+.ce-primary-link {
+  padding: 11px 20px;
+  border-radius: 8px;
+  background: #0b3a5d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ce-primary-link:hover {
+  background: #082b46;
+}
+
+.ce-error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 8px;
+  color: #be123c;
+  font-size: 13px;
+}
+
+.ce-error p {
+  margin: 4px 0 0;
+}
+
+.ce-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ce-stat {
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-left: 4px solid #0b3a5d;
+  border-radius: 12px;
+}
+
+.ce-stat--green {
+  border-left-color: #12b76a;
+}
+
+.ce-stat--amber {
+  border-left-color: #e8a008;
+}
+
+.ce-stat--blue {
+  border-left-color: #2563eb;
+}
+
+.ce-stat span {
+  display: block;
+  color: #718096;
+  font-size: 13px;
+}
+
+.ce-stat strong {
+  display: block;
+  margin-top: 6px;
+  color: #14213d;
+  font-size: 28px;
+}
+
+.ce-columns {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 20px;
+}
+
+.ce-card {
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 12px;
+}
+
+.ce-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ce-card__header h2 {
+  margin: 0;
+  font-size: 17px;
+  color: #14213d;
+}
+
+.ce-card__header a,
+.ce-muted a {
+  color: #0b3a5d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ce-muted {
+  color: #8a94a6;
+  font-size: 14px;
+}
+
+.ce-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ce-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.ce-list li:last-child {
+  border-bottom: 0;
+}
+
+.ce-list strong {
+  display: block;
+  color: #14213d;
+  font-size: 14px;
+}
+
+.ce-list li > div:first-child span {
+  display: block;
+  margin-top: 3px;
+  color: #8a94a6;
+  font-size: 12px;
+}
+
+.ce-list__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.ce-list__right small {
+  color: #8a94a6;
+  font-size: 11px;
+}
+
+.ce-count {
+  color: #0b3a5d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* status badges (shared look with Building Plans) */
+.ce-page .bp-status {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #eef1f6;
+  color: #475467;
+}
+
+.ce-page .bp-status--approved {
+  background: #dcfae6;
+  color: #067647;
+}
+
+.ce-page .bp-status--under-review {
+  background: #fef0c7;
+  color: #93370d;
+}
+
+.ce-page .bp-status--draft {
+  background: #e8eefc;
+  color: #1d4ed8;
+}
+
+.ce-page .bp-status--superseded {
+  background: #f2f4f7;
+  color: #667085;
+}
+
+@media (max-width: 1000px) {
+  .ce-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ce-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ce-main {
+    padding: 22px 16px 10px;
+  }
+
+  .ce-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

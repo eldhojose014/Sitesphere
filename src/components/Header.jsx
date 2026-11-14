@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import { ROLE_NAV, getHomeForRole } from "../lib/roles";
+import BrandLogo from "./BrandLogo";
 import "./Header.css";
 
 const Header = () => {
@@ -9,12 +11,15 @@ const Header = () => {
 
   const [userProfile, setUserProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // -----------------------------------------
   // LOAD CURRENT LOGGED-IN USER
   // -----------------------------------------
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadUserProfile = async () => {
       setLoadingProfile(true);
 
@@ -24,15 +29,9 @@ const Header = () => {
           error: userError,
         } = await supabase.auth.getUser();
 
-        if (userError) {
-          console.error(
-            "Error getting authenticated user:",
-            userError
-          );
-          return;
-        }
+        if (cancelled) return;
 
-        if (!user) {
+        if (userError || !user) {
           setUserProfile(null);
           return;
         }
@@ -43,12 +42,10 @@ const Header = () => {
           .eq("user_id", user.id)
           .maybeSingle();
 
+        if (cancelled) return;
+
         if (error) {
-          console.error(
-            "Error loading user profile:",
-            error
-          );
-          return;
+          console.error("Error loading user profile:", error);
         }
 
         if (data) {
@@ -67,20 +64,26 @@ const Header = () => {
           });
         }
       } catch (err) {
-        console.error(
-          "Header profile error:",
-          err
-        );
+        console.error("Header profile error:", err);
       } finally {
-        setLoadingProfile(false);
+        if (!cancelled) setLoadingProfile(false);
       }
     };
 
     loadUserProfile();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
+  // Close the mobile menu whenever the page changes.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   // -----------------------------------------
-  // LOGOUT
+  // ACTIONS
   // -----------------------------------------
 
   const handleLogout = async () => {
@@ -91,71 +94,57 @@ const Header = () => {
       return;
     }
 
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
-  // -----------------------------------------
-  // BACK
-  // -----------------------------------------
+  const homePath = getHomeForRole(userProfile?.role);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (window.history.length > 1) {
       navigate(-1);
       return;
     }
 
-    if (location.pathname.startsWith("/supervisor")) {
-      navigate("/supervisor");
-      return;
-    }
-
-    navigate("/contractor");
-  };
+    navigate(homePath);
+  }, [navigate, homePath]);
 
   // -----------------------------------------
-  // PROFILE DISPLAY VALUES
+  // DISPLAY VALUES
   // -----------------------------------------
 
-  const displayName =
-    loadingProfile
-      ? "Loading..."
-      : userProfile?.full_name || "User";
+  const displayName = loadingProfile
+    ? "Loading..."
+    : userProfile?.full_name || "User";
 
-  const displayRole =
-    loadingProfile
-      ? ""
-      : userProfile?.role || "User";
+  const displayRole = loadingProfile ? "" : userProfile?.role || "User";
+
+  const navItems = ROLE_NAV[userProfile?.role] || [];
+
+  const navLinks = navItems.map((item) => (
+    <NavLink
+      key={item.to}
+      to={item.to}
+      end
+      className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+    >
+      {item.label}
+    </NavLink>
+  ));
 
   return (
     <header className="site-header">
       <div className="header-container">
-
         {/* LOGO */}
+        <NavLink
+          to={homePath}
+          className="logo-section"
+          aria-label="SiteSphere home"
+        >
+          <BrandLogo variant="header" />
+        </NavLink>
 
-        <div className="logo-section">
-
-          <div className="logo-icon">
-            S
-          </div>
-
-          <div className="logo-text">
-
-            <h2>
-              SiteSphere
-            </h2>
-
-            <span>
-              Construction ERP
-            </span>
-
-          </div>
-
-        </div>
-
-        {/* NAVIGATION */}
-
-        <nav className="navigation">
-
+        {/* NAVIGATION (desktop) */}
+        <nav className="navigation" aria-label="Main navigation">
           <button
             type="button"
             className="header-back-button"
@@ -164,65 +153,20 @@ const Header = () => {
             ← Back
           </button>
 
-          <a href="/">
-            Dashboard
-          </a>
-
-          <a href="/projects">
-            Projects
-          </a>
-
-          <a href="/users">
-            Users
-          </a>
-
-          <a href="/material-requests">
-            Material Requests
-          </a>
-
-          <a href="/materials">
-            Materials
-          </a>
-
-          <a href="/reports">
-            Reports
-          </a>
-
+          {navLinks}
         </nav>
 
         {/* USER SECTION */}
-
         <div className="user-section">
-
-          <button
-            type="button"
-            className="notification-btn"
-          >
-            🔔
-          </button>
-
           <div className="profile">
-
             <div className="profile-avatar">
-              {displayName
-                ? displayName
-                    .charAt(0)
-                    .toUpperCase()
-                : "U"}
+              {displayName ? displayName.charAt(0).toUpperCase() : "U"}
             </div>
 
             <div className="profile-info">
-
-              <strong>
-                {displayName}
-              </strong>
-
-              <span>
-                {displayRole}
-              </span>
-
+              <strong>{displayName}</strong>
+              <span>{displayRole}</span>
             </div>
-
           </div>
 
           <button
@@ -233,9 +177,37 @@ const Header = () => {
             Logout
           </button>
 
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
         </div>
-
       </div>
+
+      {/* NAVIGATION (mobile) */}
+      {menuOpen && (
+        <nav className="mobile-navigation" aria-label="Mobile navigation">
+          <button
+            type="button"
+            className="header-back-button"
+            onClick={handleBack}
+          >
+            ← Back
+          </button>
+
+          {navLinks}
+
+          <div className="mobile-user">
+            <strong>{displayName}</strong>
+            <span>{displayRole}</span>
+          </div>
+        </nav>
+      )}
     </header>
   );
 };

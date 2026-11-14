@@ -42,3 +42,11 @@
     font-size: 15px;
   }
 }
+.route-loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 15px;
+}

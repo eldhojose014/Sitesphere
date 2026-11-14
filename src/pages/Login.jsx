@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import { ROLE_HOME } from "../lib/roles";
+import BrandLogo from "../components/BrandLogo";
 import "./Login.css";
 
 function Login() {
@@ -65,35 +67,23 @@ function Login() {
 
     setLoading(false);
 
-    switch (profile.role) {
-      case "Contractor/Administrator":
-        navigate("/contractor");
-        break;
+    const destination = ROLE_HOME[profile.role];
 
-      case "Site Supervisor":
-        navigate("/supervisor");
-        break;
-
-      case "Civil Engineer":
-        navigate("/civil-engineer");
-        break;
-
-      case "Accountant":
-        navigate("/accountant");
-        break;
-
-      default:
-        await supabase.auth.signOut();
-        setError("Your account has an invalid role.");
+    if (!destination) {
+      await supabase.auth.signOut();
+      setError("Your account has an invalid role.");
+      return;
     }
+
+    navigate(destination, { replace: true });
   };
 
   return (
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <h1>SiteSphere</h1>
-          <p>Construction Management System</p>
+          <BrandLogo variant="full" />
+          <p>Sign in to your SiteSphere account</p>
         </div>
 
         <form onSubmit={handleLogin}>

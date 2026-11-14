@@ -1,16 +1,25 @@
-# React + Vite
+# SiteSphere - Construction ERP System
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + Supabase. Roles: Contractor/Administrator, Site Supervisor, Civil Engineer, Accountant.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. `npm install`
+2. Copy `.env.example` to `.env` and fill in your Supabase URL and publishable (anon) key.
+3. In the Supabase SQL editor run `supabase/civil_engineer_module.sql` (creates the `building_plans`
+   table, the private `building-plans` storage bucket and all access policies).
+4. `npm run dev`
 
-## React Compiler
+## Civil Engineer module
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `/civil-engineer` - dashboard (plan counts by status, recent plans, plans per project)
+- `/building-plans` - upload, search/filter, view, download, edit and delete plans
+  (PDF, DWG, DXF, IFC, PNG, JPG, WEBP up to 25 MB)
 
-## Expanding the Oxlint configuration
+| Role | Access to building plans |
+| --- | --- |
+| Civil Engineer, Contractor/Administrator | Full manage |
+| Site Supervisor | Read-only, Approved plans only |
+| Accountant | None |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Create a Civil Engineer login by adding a user with the role `Civil Engineer` on the Users page.

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,6 +20,7 @@ import "./SiteSupervisor.css";
 
 
 const SiteSupervisor = () => {
+  const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
 
@@ -58,7 +60,7 @@ const SiteSupervisor = () => {
 
   const goTo = (path) => {
 
-    window.location.href = path;
+    navigate(path);
 
   };
 

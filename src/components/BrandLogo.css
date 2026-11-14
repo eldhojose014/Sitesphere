@@ -1,0 +1,63 @@
+.brand-logo {
+  display: block;
+}
+
+.brand-logo--full {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.brand-logo--emblem {
+  height: 48px;
+  width: auto;
+}
+
+.brand-logo--header {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-logo__emblem {
+  height: 44px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.brand-logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-logo__name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.brand-logo__site {
+  color: #0b3a5d;
+}
+
+.brand-logo__sphere {
+  color: #e8a008;
+}
+
+.brand-logo__tag {
+  margin-top: 3px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+@media (max-width: 520px) {
+  .brand-logo__tag {
+    display: none;
+  }
+}

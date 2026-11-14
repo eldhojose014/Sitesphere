@@ -10,41 +10,18 @@
   padding: 55px 30px;
 
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 50px;
 }
 
 /* Brand */
 
 .footer-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-}
-
-.footer-logo-icon {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  padding: 8px 14px;
+  background: #ffffff;
   border-radius: 10px;
-  background: #2563eb;
-
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.footer-logo h2 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.footer-logo span {
-  font-size: 11px;
-  color: #9ca3af;
 }
 
 .footer-brand p {
@@ -127,5 +104,26 @@
 
   .footer-bottom {
     padding: 20px;
+  }
+}
+
+/* Brand logo sits on a white chip so it reads on the dark footer */
+.footer-logo .brand-logo__site {
+  color: #0b3a5d;
+}
+
+.footer-logo .brand-logo__sphere {
+  color: #e8a008;
+}
+
+.footer-logo .brand-logo__tag {
+  color: #6b7280;
+}
+
+@media (max-width: 800px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 20px;
   }
 }

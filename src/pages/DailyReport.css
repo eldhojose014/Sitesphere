@@ -301,3 +301,16 @@
     padding: 18px;
   }
 }
+
+/* Logo in header */
+.daily-report-logo {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+@media (max-width: 700px) {
+  .daily-report-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+}

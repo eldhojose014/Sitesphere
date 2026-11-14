@@ -1,10 +1,14 @@
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
+import ProtectedRoute from "./components/ProtectedRoute";
+import useCurrentUser from "./lib/useCurrentUser";
+import { ROLES, getHomeForRole } from "./lib/roles";
 
 import SiteSupervisor from "./pages/SiteSupervisor";
 import Contractor from "./pages/Contractor";
+import CivilEngineer from "./pages/CivilEngineer";
+import BuildingPlans from "./pages/BuildingPlans";
 import Projects from "./pages/Projects";
 import Users from "./pages/Users";
 import MaterialRequests from "./pages/MaterialRequests";
@@ -31,137 +35,109 @@ function PageLayout({ children }) {
   );
 }
 
+// "/" sends signed-in users to their own dashboard, everyone else to login.
+function HomeRedirect() {
+  const { loading, authUser, profile } = useCurrentUser();
+
+  if (loading) {
+    return (
+      <div className="route-loading" role="status">
+        Loading SiteSphere...
+      </div>
+    );
+  }
+
+  if (!authUser || !profile || profile.status !== "Active") {
+    return <Login />;
+  }
+
+  return <Navigate to={getHomeForRole(profile.role)} replace />;
+}
+
+// Any signed-in, active user.
+const guard = (element, allowedRoles) => (
+  <ProtectedRoute allowedRoles={allowedRoles}>{element}</ProtectedRoute>
+);
+
+// Same as guard, wrapped with the shared dashboard Header.
+const guardWithHeader = (element, allowedRoles) =>
+  guard(<PageLayout>{element}</PageLayout>, allowedRoles);
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login does not use the dashboard Header */}
+        <Route path="/" element={<HomeRedirect />} />
         <Route path="/login" element={<Login />} />
 
-        {/* These pages already contain their own Header */}
-        <Route path="/supervisor" element={<SiteSupervisor />} />
-
-        <Route path="/contractor" element={<Contractor />} />
-
-        {/* Shared Header pages */}
+        {/* Role dashboards (these pages render their own Header) */}
         <Route
-          path="/projects"
-          element={
-            <PageLayout>
-              <Projects />
-            </PageLayout>
-          }
+          path="/contractor"
+          element={guard(<Contractor />, [ROLES.CONTRACTOR])}
         />
-
         <Route
-          path="/users"
-          element={
-            <PageLayout>
-              <Users />
-            </PageLayout>
-          }
+          path="/supervisor"
+          element={guard(<SiteSupervisor />, [ROLES.SUPERVISOR])}
         />
-
         <Route
-          path="/material-requests"
-          element={
-            <PageLayout>
-              <MaterialRequests />
-            </PageLayout>
-          }
+          path="/civil-engineer"
+          element={guardWithHeader(<CivilEngineer />, [
+            ROLES.ENGINEER,
+            ROLES.CONTRACTOR,
+          ])}
         />
-
-        <Route
-          path="/materials"
-          element={
-            <PageLayout>
-              <Materials />
-            </PageLayout>
-          }
-        />
-
-        <Route
-          path="/supervisor/material-requests"
-          element={
-            <PageLayout>
-              <SupervisorMaterialRequests />
-            </PageLayout>
-          }
-        />
-
-        <Route
-          path="/contractor/material-requests"
-          element={
-            <PageLayout>
-              <ContractorMaterialRequests />
-            </PageLayout>
-          }
-        />
-
-        <Route
-          path="/labours"
-          element={
-            <PageLayout>
-              <Labours />
-            </PageLayout>
-          }
-        />
-
-        <Route
-          path="/attendance"
-          element={
-            <PageLayout>
-              <Attendance />
-            </PageLayout>
-          }
-        />
-
-        <Route
-          path="/attendance-summary"
-          element={
-            <PageLayout>
-              <AttendanceSummary />
-            </PageLayout>
-          }
-        />
-
         <Route
           path="/accountant"
-          element={
-            <PageLayout>
-              <Accountant />
-            </PageLayout>
-          }
+          element={guardWithHeader(<Accountant />, [
+            ROLES.ACCOUNTANT,
+            ROLES.CONTRACTOR,
+          ])}
         />
 
-        {/* Finance Requests */}
+        {/* Civil Engineer module: managed by engineer/contractor, read-only for supervisors */}
+        <Route
+          path="/building-plans"
+          element={guardWithHeader(<BuildingPlans />, [
+            ROLES.ENGINEER,
+            ROLES.CONTRACTOR,
+            ROLES.SUPERVISOR,
+          ])}
+        />
+
+        {/* Shared pages (data access is enforced by Supabase RLS) */}
+        <Route path="/projects" element={guardWithHeader(<Projects />)} />
+        <Route path="/users" element={guardWithHeader(<Users />)} />
+        <Route
+          path="/material-requests"
+          element={guardWithHeader(<MaterialRequests />)}
+        />
+        <Route path="/materials" element={guardWithHeader(<Materials />)} />
+        <Route
+          path="/supervisor/material-requests"
+          element={guardWithHeader(<SupervisorMaterialRequests />)}
+        />
+        <Route
+          path="/contractor/material-requests"
+          element={guardWithHeader(<ContractorMaterialRequests />)}
+        />
+        <Route path="/labours" element={guardWithHeader(<Labours />)} />
+        <Route path="/attendance" element={guardWithHeader(<Attendance />)} />
+        <Route
+          path="/attendance-summary"
+          element={guardWithHeader(<AttendanceSummary />)}
+        />
         <Route
           path="/finance-requests"
-          element={
-            <PageLayout>
-              <FinanceRequests />
-            </PageLayout>
-          }
+          element={guardWithHeader(<FinanceRequests />)}
         />
-
-        {/* Daily Report */}
-        <Route
-          path="/daily-report"
-          element={<DailyReport />}
-        />
-
-        {/* Daily Reports History */}
+        <Route path="/daily-report" element={guard(<DailyReport />)} />
         <Route
           path="/daily-reports-history"
-          element={
-            <PageLayout>
-              <DailyReportsHistory />
-            </PageLayout>
-          }
+          element={guardWithHeader(<DailyReportsHistory />)}
         />
 
-        {/* Default route */}
-        <Route path="/" element={<Login />} />
+        {/* Unknown URLs */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
